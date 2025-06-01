@@ -13,7 +13,7 @@ const inputElevation = document.querySelector('.form__input--elevation');
 navigator.geolocation?.getCurrentPosition(
   function (position) {
     const { latitude, longitude } = position.coords;
-    const coords = [latitude, longitude]
+    const coords = [latitude, longitude];
 
     const map = L.map('map').setView(coords, 13);
 
@@ -21,9 +21,22 @@ navigator.geolocation?.getCurrentPosition(
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    L.marker(coords).addTo(map)
-      .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-      .openPopup();
+    map.on('click', function (mapEvent) {
+      const { lat, lng } = mapEvent.latlng;
+      const coords = [lat, lng]
+
+      L.marker(coords)
+        .addTo(map)
+        .bindPopup(L.popup({
+          maxWidth: 250,
+          minWidth: 100,
+          autoClose: false,
+          closeOnClick: false,
+          className: 'running-popup'
+        }))
+        .setPopupContent('Click')
+        .openPopup();
+    });
   },
   function () {
     alert('Could not get your position');
