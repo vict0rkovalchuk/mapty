@@ -104,6 +104,14 @@ class App {
     inputDistance.focus();
   }
 
+  _hideForm () {
+    [inputDistance, inputDuration, inputCadence, inputElevation].forEach(input => input.value = '');
+
+    form.style.display = 'none';
+    form.classList.add('hidden');
+    setTimeout(() => form.style.display = 'grid', 500);
+  }
+
   _toggleElevationField () {
     [inputCadence, inputElevation].forEach(input => {
       input.closest('.form__row').classList.toggle('form__row--hidden');
@@ -116,8 +124,6 @@ class App {
     const validInputs = (...inputs) => inputs.every(input => Number.isFinite(input));
 
     const allPositive = (...inputs) => inputs.every(input => input > 0);
-
-    const clearInputs = (...inputs) => inputs.forEach(input => input.value = '');
 
     const type = inputType.value;
     const distance = +inputDistance.value;
@@ -159,11 +165,7 @@ class App {
     this._renderWorkoutMarker(workout);
     this._renderWorkout(workout);
 
-    clearInputs(inputDistance, inputDuration, inputCadence, inputElevation);
-
-    form.style.display = 'none';
-    form.classList.add('hidden');
-    setTimeout(() => form.style.display = 'grid', 500);
+    this._hideForm();
   }
 
   _renderWorkoutMarker (workout) {
